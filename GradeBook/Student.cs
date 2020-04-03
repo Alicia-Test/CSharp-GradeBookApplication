@@ -34,6 +34,10 @@ namespace GradeBook
             Grades = new List<double>();
         }
 
+        public Student()
+        {
+        }
+
         public void AddGrade(double grade)
         {
             if (grade < 0 || grade > 100)
