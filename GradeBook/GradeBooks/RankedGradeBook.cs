@@ -1,4 +1,7 @@
-﻿namespace GradeBook.GradeBooks
+﻿using System;
+using System.Linq;
+
+namespace GradeBook.GradeBooks
 {
     public class RankedGradeBook : BaseGradeBook
     {
@@ -7,18 +10,26 @@
             Type = Enums.GradeBookType.Ranked;
         }
 
-        public override void GetLetterGrade(double averageGrade, char a)
+        public override char GetLetterGrade(double averageGrade)
         {
-            if(averageGrade < 5)
+            if (Students.Count < 5)
             {
-                throw new System.Exception();
+                throw new InvalidOperationException("You must have at least 5 students to do ranked grading.");
             }
-            else
-            {
-                return;
-            }
+
+            var threshold = (int)Math.Ceiling(Students.Count * 0.2);
+            var grades = Students.OrderByDescending(e => e.AverageGrade).Select(e => e.AverageGrade).ToList();
+
+            if (averageGrade >= grades[threshold - 1])
+                return 'A';
+            if (averageGrade >= grades[(threshold * 2) - 1])
+                return 'B';
+            if (averageGrade >= grades[(threshold * 3) - 1])
+                return 'C';
+            if (averageGrade >= grades[(threshold * 4) - 1])
+                return 'D';
+            return 'F';
         }
     }
-
 }
 

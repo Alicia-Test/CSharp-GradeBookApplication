@@ -15,6 +15,11 @@ namespace GradeBook.GradeBooks
         public List<Student> Students { get; set; }
         public GradeBookType Type { get; set; }
 
+        internal void GetLetterGrade()
+        {
+            throw new NotImplementedException();
+        }
+
         public BaseGradeBook(string name)
         {
             Name = name;
