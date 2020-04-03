@@ -1,6 +1,5 @@
 ﻿using GradeBook.GradeBooks;
 using System;
-
 namespace GradeBook.UserInterfaces
 {
     public static class StartingUserInterface
@@ -16,7 +15,6 @@ namespace GradeBook.UserInterfaces
                 CommandRoute(command);
             }
         }
-
         public static void CommandRoute(string command)
         {
             if (command.StartsWith("create"))
@@ -30,19 +28,18 @@ namespace GradeBook.UserInterfaces
             else
                 Console.WriteLine("{0} was not recognized, please try again.", command);
         }
-
         public static void CreateCommand(string command)
         {
             var parts = command.Split(' ');
             if (parts.Length != 3)
-            {
-                Console.WriteLine("Command not valid, Create requires a name and type of gradebook.");
-                return;
-            }
+                {
+                    Console.WriteLine("Command not valid, Create requires a name and type of gradebook.");
+                    return;
+                }
             var name = parts[1];
+            BaseGradeBook gradeBook = new BaseGradeBook(name);
             var type = parts[2];
 
-            BaseGradeBook gradeBook;
             if (type == "standard")
                 gradeBook = new StandardGradeBook(name);
             if (type == "ranked")
@@ -52,8 +49,10 @@ namespace GradeBook.UserInterfaces
                 Console.WriteLine("{0} is not a supported type of gradebook, please try again", type);
                 return;
             }
-        }
 
+            Console.WriteLine("Created gradebook {0}.", name);
+            GradeBookUserInterface.CommandLoop(gradeBook);
+        }
         public static void LoadCommand(string command)
         {
             var parts = command.Split(' ');
@@ -64,13 +63,10 @@ namespace GradeBook.UserInterfaces
             }
             var name = parts[1];
             var gradeBook = BaseGradeBook.Load(name);
-
             if (gradeBook == null)
                 return;
-
             GradeBookUserInterface.CommandLoop(gradeBook);
         }
-
         public static void HelpCommand()
         {
             Console.WriteLine();
